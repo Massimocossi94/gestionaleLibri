@@ -1,0 +1,170 @@
+<template>
+  <div class="card" v-if="book">
+    <div class="card-content">
+      <div class="media">
+        <div class="media-left" v-if="book.thumbnail">
+          <figure class="image is-68x68">
+            <img :src="book.thumbnail" :alt="book.titolo">
+          </figure>
+        </div>
+        <div class="media-content">
+          <p class="title is-6">{{ book.titolo }}</p>
+          <p class="subtitle is-6" v-if="book.autori">{{ book.autori }}</p>
+          <button class="button is-small is-info is-outlined" @click="tramaModalLibrary = true">Trama</button>
+        </div>
+      </div>
+
+      <div class="content">
+        Editore: {{ book.editore }}<br/>
+        Pubblicato il {{ new Date(book.dataPubblicazione).toLocaleDateString() }}<br/>
+        ISBN: {{ book.isbn }}<br/>
+        Formato: {{ book.tipologia }}<br/>
+      </div>
+      <div class="cardButton">
+        <button class="button is-primary is-info" @click="modificaModale = true">Modifica</button>
+        <button class="button is-primary is-focused" @click="confermaDelete  = true">Elimina</button>
+      </div>
+
+      <div class="modal" :class="{ 'is-active': tramaModalLibrary }">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Trama</p>
+            <button @click="tramaModalLibrary = false" class="delete" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            <div class="title is-6">{{ book.titolo }}</div>
+            <span>{{ getTrama(book) }}</span>
+          </section>
+        </div>
+      </div>
+
+      <div class="modal" :class="{ 'is-active': modificaModale }">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Modifica</p>
+            <button @click="modificaModale = false" class="delete" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            <div class="field">
+              <label class="label">Titolo</label>
+              <div class="control">
+                <input class="input" type="text" v-model="book.titolo">
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Autore/i</label>
+              <div class="control">
+                <input class="input" type="text" v-model="book.autori">
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Editore</label>
+              <div class="control">
+                <input class="input" type="text" v-model="book.editore">
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">ISBN</label>
+              <div class="control">
+                <input class="input" type="text" v-model="book.isbn">
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Trama</label>
+              <div class="control">
+                <textarea class="textarea" v-model="book.trama"></textarea>
+              </div>
+            </div>
+            <button class="button is-info" @click="updateBook">Salva</button>
+          </section>
+        </div>
+      </div>
+
+      <div class="modal" :class="{ 'is-active': confermaDelete }">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <section class="modal-card-body deleteModal">
+            <h1 class="eliminaLibro">Sei sicuro/a di voler eliminare il libro?</h1>
+            <div class="deleteButton">
+              <button  @click="confermaDelete  = false" class="button is-danger">ANNULLA</button>
+              <button  @click="deleteBook(); confermaDelete  = false; " class="button is-success">CONFERMA</button>
+            </div>
+          </section>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+    props: {
+        book: []
+    },
+    data (){
+      return {
+        tramaModalLibrary: false,
+        confermaDelete : false,
+        modificaModale : false
+      }
+    },
+    methods:{
+      deleteBook(){
+          this.$emit('deleteBook', this.book);
+      },
+      getTrama(book) {
+        let description = "Trama non disponibile";
+        if (book.trama) {
+          description = book.trama;
+        }
+        return description;
+      },
+      updateBook() {
+        this.$emit('updateBook', this.book);
+        this.modificaModale = false;
+      }
+    }
+}
+
+</script>
+
+
+<style>
+  .cardButton{
+    display: flex;
+    justify-content: space-between;
+  }
+  .modal-card-head{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .modal-card-body {
+    text-align: justify;
+  }
+  .modal-card-head{
+    background: hsl(207, 61%, 53%);
+  }
+  .modal-card-title{
+    color: hsl(0, 0%, 93%);
+  }
+  .eliminaLibro{
+    text-align: center;
+    font-size: 2vmax;
+    color: black;
+    padding-bottom: 20px;
+  }
+  .deleteButton{
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .deleteModal{
+    background: hsl(44, 100%, 77%);
+    border-radius: 10px;
+  }
+  
+</style>
