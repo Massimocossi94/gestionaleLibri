@@ -29,7 +29,7 @@
                     <my-book :book="book" @deleteBook="onDeleteBook($event)" @updateBook="onUpdateBook($event)"></my-book>
                 </div>
             </div>
-            <h2 class="title is-2" v-else>Formato non presente</h2>
+            <h2 class="title is-2" v-else>Nessun libro trovato.</h2>
         </section>
     </div>
 </template>
