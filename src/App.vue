@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <navbar />
+    <navbar/>
     
     <!-- Placeholder -->
     <router-view></router-view>
@@ -13,16 +13,13 @@ import Navbar from './components/Navbar.vue';
 export default {
   components: { Navbar },
   name: 'App',
-  data() {
-    return {
-      
-    }
-  }
+
 }
 </script>
 
 <style>
 @import "../node_modules/bulma/css/bulma.min.css";
+
 *{
   padding: 0;
   margin: 0;

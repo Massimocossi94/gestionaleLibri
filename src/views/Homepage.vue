@@ -31,6 +31,11 @@ import { BOOKS } from "../api/books";
 export default {
   components: { Book },
   name: 'App',
+   mounted() {
+        if (!localStorage.getItem('token')) {
+            this.$router.push("/login");
+        }
+    },
   created() {
     // this.getBooks();
   },
@@ -44,7 +49,8 @@ export default {
       confermaModal : false,
       libroPresente : "",
       libroGiaPresente : false,
-      libroSuccesso : false
+      libroSuccesso : false,
+      token: localStorage.getItem('token')
     }
   },
   methods: {
@@ -62,16 +68,29 @@ export default {
 
       // Controllare se libro è già presente nella libreria
       let toAdd = true;
-      const bookresponse = await fetch(BOOKS)
+      const bookresponse = await fetch(BOOKS+'/user/me', {
+          method: 'GET',
+          headers: {
+              'Authorization': 'Bearer '+this.token
+          },
+      });
       const bookresult = await bookresponse.json();
-      for(let i=0; i<bookresult.book.length; i++ ){
-        if (bookresult.book[i].titolo === newBook.titolo) {
-          this.confermaModal = true;
-          this.libroGiaPresente = true;
-          this.libroSuccesso = false;
-          this.libroPresente = 'Libro già presente in libreria'
-          toAdd = false;
+      console.log(bookresult.message);
+      if(bookresult.message !== 'Non Autorizzato!!!'){
+        for(let i=0; i<bookresult.book.length; i++ ){
+          if (bookresult.book[i].titolo === newBook.titolo) {
+            this.confermaModal = true;
+            this.libroGiaPresente = true;
+            this.libroSuccesso = false;
+            this.libroPresente = 'Libro già presente in libreria'
+            toAdd = false;
+          }
         }
+      }else{
+        alert('SESSIONE SCADUTA');
+        localStorage.removeItem('token');
+        this.$router.replace("/login");
+        window.location.reload()
       }
       // console.log(newBook);
       if (toAdd) {
@@ -81,14 +100,16 @@ export default {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+this.token
           },
           body: JSON.stringify(newBook)
         });
-        await response.json();
-        this.confermaModal = true;
-        this.libroSuccesso = true;
-        this.libroGiaPresente = false;
-        this.libroPresente = 'Libro aggiunto in libreria con successo'
+         let result = await response.json();
+        console.log(result.messages);
+          this.confermaModal = true;
+          this.libroSuccesso = true;
+          this.libroGiaPresente = false;
+          this.libroPresente = 'Libro aggiunto in libreria con successo'        
       }
     },
     async getBooks() {

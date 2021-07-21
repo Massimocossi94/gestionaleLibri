@@ -43,6 +43,11 @@ export default {
         MyBook
     },
     name: "Libreria",
+    mounted() {
+        if (!localStorage.getItem('token')) {
+            this.$router.push("/login");
+        }
+    },
     data() {
         return {
             books: [],
@@ -52,7 +57,8 @@ export default {
                 { value: 'AudioLibro', label: 'Audio libro' }
             ],
             optionSelected: null,
-            ricercaAutore: ''
+            ricercaAutore: '',
+            token: localStorage.getItem('token')
         }
     },
     created(){
@@ -86,9 +92,21 @@ export default {
         },
          async getbooks(){
              try{
-                 const result = await fetch(BOOKS);
+                 const result = await fetch(BOOKS+'/user/me', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer '+this.token
+                    },
+                });
                  const data = await result.json();
-                 this.books = data.book;
+                 if(data.message !== 'Non Autorizzato!!!'){
+                    this.books = data.book;
+                 }else{
+                     alert('SESSIONE SCADUTA')
+                     localStorage.removeItem('token');
+                     this.$router.replace("/login");
+                     //window.location.reload()
+                 }
              }catch(error) {
                 console.log('errore: ', error);
              }
@@ -100,6 +118,7 @@ export default {
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+this.token
                     },
                     body: JSON.stringify(book)
                 })
@@ -112,7 +131,10 @@ export default {
         async onDeleteBook(book){
             try{
                 const result = await fetch(BOOKS+'/'+book.id, {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': 'Bearer '+this.token
+                    },
                 })
                 await result.json();
                 this.getbooks();
