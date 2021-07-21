@@ -74,7 +74,7 @@ export default {
         }else{
             localStorage.removeItem('token');
             //this.$router.replace("/books");
-            this.$router.back();
+            //his.$router.back();
 
         }
     }

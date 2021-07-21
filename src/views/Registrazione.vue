@@ -57,6 +57,7 @@
                 </button>
             </p>
         </div>
+         <p>Se sei già registrato effettua <a href="/login">qui</a> l'accesso</p>
         </section>
   </div>
 </template>

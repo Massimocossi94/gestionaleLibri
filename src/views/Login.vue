@@ -40,6 +40,7 @@
                     ACCEDI
                 </button>
             </p>
+            <p>Se non sei ancora registrato crea il tuo profilo <a href="/registrazione">qui</a></p>
         </div>
         </section>
   </div>
