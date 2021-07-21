@@ -109,7 +109,7 @@ export default {
                                 this.validationErrors.push("Inserire <strong>Password</strong> di almeno 8 caratteri");
                             }if(result.error[i].msg == 'Email già esistente!!!'){
                                 this.validationErrors.push("<strong>E-mail</strong> già esistente");
-                            }if(result.error[i].msg == 'Inserisci Username'){
+                            }if(result.error[i].msg == 'Inserire Username'){
                                 this.validationErrors.push("Inserisci <strong>Username</strong>");
                             }if(result.error[i].msg == 'Username già esistente!!!'){
                                 this.validationErrors.push("<strong>Username</strong> già esistente");
