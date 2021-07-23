@@ -3,9 +3,10 @@
     <div class="card-content">
       <div class="media">
         <div class="media-left" v-if="book.thumbnail">
-          <figure class="image is-68x68">
-            <img :src="book.thumbnail" :alt="book.titolo">
+          <figure class="image is-128x128">
+            <img class="immagine" :src="book.thumbnail" :alt="book.titolo">
           </figure>
+          
         </div>
         <div class="media-content">
           <p class="title is-6">{{ book.titolo }}</p>
@@ -15,10 +16,10 @@
       </div>
 
       <div class="content">
-        Editore: {{ book.editore }}<br/>
-        Pubblicato il {{ new Date(book.dataPubblicazione).toLocaleDateString() }}<br/>
-        ISBN: {{ book.isbn }}<br/>
-        Formato: {{ book.tipologia }}<br/>
+        <strong>Editore:</strong> {{ book.editore }}<br/>
+        <strong>Pubblicato il</strong> {{ new Date(book.dataPubblicazione).toLocaleDateString() }}<br/>
+        <strong>ISBN:</strong> {{ book.isbn }}<br/>
+        <strong>Formato:</strong> {{ book.tipologia }}<br/>
       </div>
       <div class="cardButton">
         <button class="button is-primary is-info" @click="modificaModale = true">Modifica</button>
@@ -166,5 +167,13 @@ export default {
     background: hsl(44, 100%, 77%);
     border-radius: 10px;
   }
+  .immagine{
+    max-width: 100%;
+    max-height: 140%;    
+  }
+  .content{
+    padding-top: 30px;
+  }
+
   
 </style>

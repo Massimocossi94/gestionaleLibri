@@ -90,11 +90,10 @@ export default {
         alert('SESSIONE SCADUTA');
         localStorage.removeItem('token');
         this.$router.replace("/login");
-        window.location.reload()
       }
       // console.log(newBook);
       if (toAdd) {
-        console.log("newBook", newBook);
+        //console.log("newBook", newBook);
         const response = await fetch(BOOKS, {
           method: 'POST',
           headers: {
