@@ -33,7 +33,7 @@ export default {
   name: 'App',
    mounted() {
         if (!localStorage.getItem('token')) {
-            this.$router.push("/login");
+            this.$router.replace("/login");
         }
     },
   created() {

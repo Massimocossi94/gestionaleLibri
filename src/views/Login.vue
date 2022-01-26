@@ -79,7 +79,7 @@ export default {
             let result = await response.json();
             if(result.messages === 'Sei Loggato'){
                 localStorage.setItem('token', result.token);
-                this.$router.replace("/");
+                this.$router.replace("/books");
                 window.location.reload()
             }if (result.message === 'Email errata!!!'){
                 this.validationErrors.push("<strong>E-mail</strong> errata");
