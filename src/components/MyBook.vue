@@ -78,6 +78,12 @@
                 <textarea class="textarea" v-model="book.trama"></textarea>
               </div>
             </div>
+            <div class="field">
+              <label class="label">Copertina</label>
+              <div class="control">
+                  <input placeholder="Incolla indirizzo immagine" class="input" type="text" v-model="book.thumbnail">
+              </div>
+            </div>
             <button class="button is-info" @click="updateBook">Salva</button>
           </section>
         </div>
@@ -154,7 +160,7 @@ export default {
   }
   .eliminaLibro{
     text-align: center;
-    font-size: 2vmax;
+    font-size: 1.5rem;
     color: black;
     padding-bottom: 20px;
   }

@@ -68,17 +68,18 @@
             </div>
         </div>
 
-
-
-
         <section class="section">
             <label class="label">Aggiungi Libro che non trovi nella ricerca</label>
             <button class="button is-primary" @click="aggiungiModale = true">Aggiungi</button>
             
-            <div class="field">
-                <label class="label">Ricerca per autore</label>
+            <div class="field Ricerca">
+                <label class="label">Ricerca per Autore</label>
                 <div class="control">
                     <input class="input" type="text" v-model="ricercaAutore" placeholder="es. Donato Carrisi">
+                </div>
+                <label class="label">Ricerca per Titolo</label>
+                <div class="control">
+                    <input class="input" type="text" v-model="ricercaTitolo" placeholder="es. La ragazza nella nebbia">
                 </div>
             </div>
             <div class="field">
@@ -102,7 +103,9 @@
                 <div class="modal-card">
                 <section class="modal-card-body" :class="{'conferma' : libroSuccesso, 'presente' : libroGiaPresente}">
                     <h1 class="presenzaLibro">{{ libroPresente }}</h1>
-                    <button  @click="confermaModal = false, aggiungiModale = false"  class="button okbutton"><p class="subtitle">OK</p></button>
+                    <button  @click="confermaModal = false"  class="button okbutton">
+                      <p class="subtitle">OK</p>
+                    </button>
                 </section>
                 </div>
             </div> 
@@ -141,6 +144,7 @@ export default {
             ],
             optionSelected: null,
             ricercaAutore: '',
+            ricercaTitolo:'',
             token: localStorage.getItem('token'),
             aggiungiModale: false,
             titolo: null,
@@ -179,7 +183,25 @@ export default {
                     return book.autori.toLowerCase().includes(this.ricercaAutore.toLowerCase())
                 });
             }
-            return filtrati;
+            // Filtro per titolo
+            if (this.ricercaTitolo !== '') {
+                filtrati = filtrati.filter(book => {
+                    return book.titolo.toLowerCase().includes(this.ricercaTitolo.toLowerCase())
+                });
+            }
+            //ritorno i libri in ordine alfabetico in base al titolo
+            return  filtrati.sort(function(a, b) {
+                var nameA = a.titolo.toUpperCase(); 
+                var nameB = b.titolo.toUpperCase(); 
+                if (nameA < nameB) {
+                    return -1;
+                }
+                if (nameA > nameB) {
+                    return 1;
+                }
+                //Se titoli uguale
+                return 0;
+            });
         }
     },
     methods: {
@@ -274,15 +296,15 @@ export default {
             if (toAdd) {
                 //console.log("newBook", newBook);
                 const response = await fetch(BOOKS, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer '+this.token
-                },
-                body: JSON.stringify(newBook)
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+this.token
+                    },
+                    body: JSON.stringify(newBook)
                 });
                 let result = await response.json();
-                console.log(result.error);
+                //console.log(result.error);
                 if(result.messages !== 'Success Operation'){
                     for(let i = 0; i<Object.keys(result.error).length; i++){
                         if(result.error[i].msg == 'Titolo Maggiore di 3 caratteri'){
@@ -303,6 +325,7 @@ export default {
                     this.libroSuccesso = true;
                     this.libroGiaPresente = false;
                     this.libroPresente = 'Libro aggiunto in libreria con successo'
+                    this.aggiungiModale = false;
                     this.getbooks();  
                 }  
             }
@@ -311,21 +334,27 @@ export default {
 }
 </script>
 <style>
-.conferma{
-    background: hsl(153, 53%, 53%);
-    border-radius: 10px;
-    display: flex;
-    flex-flow: column;
-    justify-content: space-around;
-  }
-  .presente{
-    background: hsl(348, 86%, 61%);
-    border-radius: 10px;
-    display: flex;
-    flex-flow: column;
-    justify-content: space-around;
-  }
-  .button{
-      margin-bottom: 10px;
-  }
+    .conferma{
+        background: hsl(153, 53%, 53%);
+        border-radius: 10px;
+        display: flex;
+        flex-flow: column;
+        justify-content: space-around;
+    }
+    .presente{
+        background: hsl(348, 86%, 61%);
+        border-radius: 10px;
+        display: flex;
+        flex-flow: column;
+        justify-content: space-around;
+    }
+    .presenzaLibro{
+        font-size: 1.5rem;
+    }
+    .button{
+        margin-bottom: 10px;
+    }
+    .Ricerca .control{
+        margin-bottom: 10px;
+    }
 </style>
