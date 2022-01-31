@@ -87,11 +87,18 @@
               </div>
             </div>
             <div class="field">
-              <label class="checkbox">
-                <input id='letto' type="checkbox"> Libro letto
-              </label>
+            <label class="label">Libro Letto?</label>
+            <div class="control">
+              <div class="select">
+                <select @change="onLettoChange">
+                  <option selected disabled hidden>Seleziona</option>
+                  <option value="Sì">Sì</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
             </div>
-            <button class="button is-info" @click="updateBook">Salva</button>
+          </div>
+            <button class="button is-info" @click="updateBook" :disabled ="this.book.letto === 'Seleziona'">Salva</button>
           </section>
         </div>
       </div>
@@ -126,6 +133,9 @@ export default {
       }
     },
     methods:{
+      onLettoChange(event) {
+      this.book.letto = event.target.value;
+    },
       deleteBook(){
           this.$emit('deleteBook', this.book);
       },
@@ -136,16 +146,7 @@ export default {
         }
         return description;
       },
-      read(book){
-        let letto = document.getElementById('letto');
-        if (letto.checked)
-            book.letto='Sì';
-        else
-            book.letto='No';
-        return this.book
-      },
       updateBook() {
-        this.read(this.book);
         this.$emit('updateBook', this.book);
         this.modificaModale = false;
       },

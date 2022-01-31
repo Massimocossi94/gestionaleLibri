@@ -65,15 +65,22 @@
               </div>
             </div>
           </div>
-          <div class="field">
-            <label class="checkbox">
-              <input id='letto' type="checkbox"> Libro letto
-            </label>
+         <div class="field">
+            <label class="label">Libro Letto?</label>
+            <div class="control">
+              <div class="select">
+                <select @change="onLettoChange">
+                  <option>Seleziona</option>
+                  <option value="Sì">Sì</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+            </div>
           </div>
         </section>
         <footer class="modal-card-foot formatButtons">
           <button @click="aggiungiModal = false" class="button">Chiudi</button>
-          <button class="button is-primary" @click="addBook" :disabled="tipologiaLibro === ''">Aggiungi Libro</button>
+          <button class="button is-primary" @click="addBook" :disabled="tipologiaLibro === '' || libroLetto===''">Aggiungi Libro</button>
         </footer>
       </div>
     </div>
@@ -98,6 +105,9 @@ export default {
     onTipologiaChange(event) {
       this.tipologiaLibro = event.target.value;
     },
+    onLettoChange(event) {
+      this.libroLetto = event.target.value;
+    },
     getAuthors(authors) {
       return authors.join(", ");
     },
@@ -117,11 +127,6 @@ export default {
       return description;
     },
     addBook() {
-      let letto = document.getElementById('letto');
-      if (letto.checked)
-            this.libroLetto='Sì';
-      else
-            this.libroLetto='No';
       this.$emit('addBook', { book: this.book, tipologia: this.tipologiaLibro, letto:this.libroLetto });
       this.aggiungiModal = false;
     }
