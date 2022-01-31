@@ -46,6 +46,7 @@ export default {
       tramaModal: false,
       aggiungiModal: false,
       tipologiaLibro: '',
+      letto:'',
       confermaModal : false,
       libroPresente : "",
       libroGiaPresente : false,
@@ -54,7 +55,7 @@ export default {
     }
   },
   methods: {
-    async onAddBook({ book, tipologia }) {
+    async onAddBook({ book, tipologia, letto }) {
       const newBook = {
         titolo: book.volumeInfo.title,
         autori: book.volumeInfo.authors.toString(),
@@ -63,7 +64,8 @@ export default {
         dataPubblicazione: book.volumeInfo.publishedDate,
         editore: book.volumeInfo.publisher,
         isbn: book.volumeInfo.industryIdentifiers[0].identifier,
-        tipologia: tipologia
+        tipologia: tipologia,
+        letto: letto
       };
 
       // Controllare se libro è già presente nella libreria
@@ -91,7 +93,7 @@ export default {
         localStorage.removeItem('token');
         this.$router.replace("/login");
       }
-      // console.log(newBook);
+      console.log(newBook);
       if (toAdd) {
         //console.log("newBook", newBook);
         const response = await fetch(BOOKS, {

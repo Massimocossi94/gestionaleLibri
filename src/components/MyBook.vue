@@ -20,6 +20,8 @@
         <strong>Pubblicato il</strong> {{ new Date(book.dataPubblicazione).toLocaleDateString() }}<br/>
         <strong>ISBN:</strong> {{ book.isbn }}<br/>
         <strong>Formato:</strong> {{ book.tipologia }}<br/>
+        <strong>Letto:</strong> {{ book.letto }}<br/> 
+        <button v-if="book.letto === 'No'" class="button is-small is-success is-outlined" @click="readBook()">Segna come letto</button>
       </div>
       <div class="cardButton">
         <button class="button is-primary is-info" @click="modificaModale = true">Modifica</button>
@@ -84,6 +86,11 @@
                   <input placeholder="Incolla indirizzo immagine" class="input" type="text" v-model="book.thumbnail">
               </div>
             </div>
+            <div class="field">
+              <label class="checkbox">
+                <input id='letto' type="checkbox"> Libro letto
+              </label>
+            </div>
             <button class="button is-info" @click="updateBook">Salva</button>
           </section>
         </div>
@@ -129,9 +136,22 @@ export default {
         }
         return description;
       },
+      read(book){
+        let letto = document.getElementById('letto');
+        if (letto.checked)
+            book.letto='Sì';
+        else
+            book.letto='No';
+        return this.book
+      },
       updateBook() {
+        this.read(this.book);
         this.$emit('updateBook', this.book);
         this.modificaModale = false;
+      },
+      readBook() {
+        this.book.letto = 'Sì'
+        this.$emit('readBook',this.book);
       }
     }
 }

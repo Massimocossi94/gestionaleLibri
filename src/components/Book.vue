@@ -65,6 +65,11 @@
               </div>
             </div>
           </div>
+          <div class="field">
+            <label class="checkbox">
+              <input id='letto' type="checkbox"> Libro letto
+            </label>
+          </div>
         </section>
         <footer class="modal-card-foot formatButtons">
           <button @click="aggiungiModal = false" class="button">Chiudi</button>
@@ -86,6 +91,7 @@ export default {
       tramaModal: false,
       aggiungiModal: false,
       tipologiaLibro: '',
+      libroLetto:''
     }
   },
   methods: {
@@ -111,7 +117,12 @@ export default {
       return description;
     },
     addBook() {
-      this.$emit('addBook', { book: this.book, tipologia: this.tipologiaLibro });
+      let letto = document.getElementById('letto');
+      if (letto.checked)
+            this.libroLetto='Sì';
+      else
+            this.libroLetto='No';
+      this.$emit('addBook', { book: this.book, tipologia: this.tipologiaLibro, letto:this.libroLetto });
       this.aggiungiModal = false;
     }
   }

@@ -62,6 +62,9 @@
                                 </select>
                             </div>
                         </div>
+                        <label class="checkbox">
+                            <input id='letto2' type="checkbox"> Libro letto
+                        </label>
                     </div>
                     <button class="button is-info" @click="createBook" :disabled="tipologia===''">Salva</button>
                 </section>
@@ -97,6 +100,21 @@
                     </div>
                 </div>
             </div>
+            <div class="field">
+                <label class="label">Filtra per Letti o Non Letti</label>
+                <div class="control">
+                    <div class="select">
+                        <select  @change="onReadOptionChange">
+                            <option value="All">Tutti</option>
+                            <option
+                                v-for="optionread in optionsread"
+                                :key="optionread.value"
+                                :value="optionread.value"
+                            >{{ optionread.label }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             
             <div class="modal" :class="{ 'is-active': confermaModal }">
                 <div class="modal-background"></div>
@@ -112,7 +130,8 @@
 
             <div v-if="libriFiltrati.length > 0" class="columns is-multiline">
                 <div class="column is-6" v-for="book in libriFiltrati" :key="book.id">
-                    <my-book :book="book" @deleteBook="onDeleteBook($event)" @updateBook="onUpdateBook($event)"></my-book>
+                    <my-book :book="book" @deleteBook="onDeleteBook($event)" 
+                    @updateBook="onUpdateBook($event)" @readBook="onReadBook($event)"></my-book>
                 </div>
             </div>
             <h2 class="title is-2" v-else>Nessun libro trovato.</h2>
@@ -142,7 +161,12 @@ export default {
                 { value: 'Cartaceo', label: 'Cartaceo' },
                 { value: 'AudioLibro', label: 'Audio libro' }
             ],
+            optionsread: [
+                { value: 'Sì', label: 'Letti' },
+                { value: 'No', label: 'Non Letti' },
+            ],
             optionSelected: null,
+            optionSelectedread: null,
             ricercaAutore: '',
             ricercaTitolo:'',
             token: localStorage.getItem('token'),
@@ -155,6 +179,7 @@ export default {
             editore: null,
             isbn: null,
             tipologia: null,
+            letto:null,
             confermaModal : false,
             libroPresente : "",
             libroGiaPresente : false,
@@ -174,8 +199,15 @@ export default {
                         filtrati.push(book);
                     }
                 });
-            } else {
+            }else {
                 filtrati = this.books;
+            }
+            // Filtro per Letti
+            if (this.optionSelectedread !== null && this.optionSelectedread !== 'All') {
+                filtrati = filtrati.filter(book => {
+                    return book.letto.includes(this.optionSelectedread)
+
+                });
             }
             // Filtro per autore
             if (this.ricercaAutore !== '') {
@@ -199,12 +231,15 @@ export default {
                 if (nameA > nameB) {
                     return 1;
                 }
-                //Se titoli uguale
+                //Se titoli uguali
                 return 0;
             });
         }
     },
     methods: {
+        onReadOptionChange(event) {
+            this.optionSelectedread = event.target.value;
+        },
         onTipologiaChange(event) {
             this.tipologia = event.target.value;
         },
@@ -248,6 +283,22 @@ export default {
                 console.log('errore: ', error);
             }
         },
+        async onReadBook(book) {
+            try {
+                const result = await fetch(BOOKS+'/'+book.id, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+this.token
+                    },
+                    body: JSON.stringify(book)
+                })
+                await result.json();
+                this.getbooks();
+            } catch(error) {
+                console.log('errore: ', error);
+            }
+        },
         async onDeleteBook(book){
             try{
                 const result = await fetch(BOOKS+'/'+book.id, {
@@ -263,6 +314,11 @@ export default {
             }
         },
         async createBook() {
+            let letto = document.getElementById('letto2');
+                if (letto.checked)
+                    this.letto='Sì';
+                else
+                    this.letto='No';
             const newBook = {
                 titolo: this.titolo,
                 autori: this.autori,
@@ -271,7 +327,8 @@ export default {
                 dataPubblicazione: this.dataPubblicazione,
                 editore: this.editore,
                 isbn: this.isbn,
-                tipologia: this.tipologia
+                tipologia: this.tipologia,
+                letto:this.letto
             };
             
             // Controllare se libro è già presente nella libreria
