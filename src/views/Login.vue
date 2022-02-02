@@ -28,7 +28,8 @@
         </div>
         <div class="field">
             <p class="control has-icons-left">
-                <input class="input" type="password" placeholder="Password" v-model="password">
+                <input class="input" type="password" placeholder="Password" v-model="password" 
+                    @keypress.enter="signin">
                 <span class="icon is-small is-left">
                     <i class="fas fa-lock"></i>
                 </span>

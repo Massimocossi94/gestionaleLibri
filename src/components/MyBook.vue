@@ -20,8 +20,11 @@
         <strong>Pubblicato il</strong> {{ new Date(book.dataPubblicazione).toLocaleDateString() }}<br/>
         <strong>ISBN:</strong> {{ book.isbn }}<br/>
         <strong>Formato:</strong> {{ book.tipologia }}<br/>
-        <strong>Letto:</strong> {{ book.letto }}<br/> 
-        <button v-if="book.letto === 'No'" class="button is-small is-success is-outlined" @click="readBook()">Segna come letto</button>
+        <div id='bottoneLetto'>
+          <div><strong>Letto:</strong> {{ book.letto }}</div>
+          <button v-if="book.letto === 'No'" class="button is-small is-success is-outlined" @click="readBook()">Segna come letto</button>
+          <br/>
+        </div>
       </div>
       <div class="cardButton">
         <button class="button is-primary is-info" @click="modificaModale = true">Modifica</button>
@@ -98,7 +101,7 @@
               </div>
             </div>
           </div>
-            <button class="button is-info" @click="updateBook" :disabled ="this.book.letto === 'Seleziona'">Salva</button>
+            <button class="button is-info" @click="updateBook">Salva</button>
           </section>
         </div>
       </div>
@@ -201,6 +204,10 @@ export default {
   .content{
     padding-top: 30px;
   }
-
+  #bottoneLetto{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
   
 </style>

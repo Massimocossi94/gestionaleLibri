@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <div class="field">
-                        <label class="label">Seleziona tipologia</label>
+                        <label class="label">Seleziona Tipologia</label>
                         <div class="control">
                             <div class="select">
                                 <select @change="onTipologiaChange">
@@ -86,7 +86,7 @@
                 </div>
             </div>
             <div class="field">
-                <label class="label">Filtra per tipologia</label>
+                <label class="label">Filtra per Tipologia</label>
                 <div class="control">
                     <div class="select">
                         <select  @change="onOptionChange">

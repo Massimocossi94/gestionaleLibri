@@ -1,7 +1,8 @@
 <template>
     <div>
         <div class="columns search">
-          <input class="input column is-11" type="text" placeholder="Fai la tua ricerca (autore, titolo, etc.)" v-model="query" @keypress.enter="getBooks()">
+          <input class="input column is-11" type="text" placeholder="Fai la tua ricerca (autore, titolo, etc.)" v-model="query"
+             @keypress.enter="getBooks()">
           <button class="button is-primary is-1" @click="getBooks()">Cerca</button>
         </div>
 
@@ -36,9 +37,6 @@ export default {
             this.$router.replace("/login");
         }
     },
-  created() {
-    // this.getBooks();
-  },
   data() {
     return {
       books: [],
@@ -93,9 +91,7 @@ export default {
         localStorage.removeItem('token');
         this.$router.replace("/login");
       }
-      console.log(newBook);
       if (toAdd) {
-        //console.log("newBook", newBook);
         const response = await fetch(BOOKS, {
           method: 'POST',
           headers: {
@@ -105,12 +101,12 @@ export default {
           },
           body: JSON.stringify(newBook)
         });
-         let result = await response.json();
+        let result = await response.json();
         console.log(result.messages);
-          this.confermaModal = true;
-          this.libroSuccesso = true;
-          this.libroGiaPresente = false;
-          this.libroPresente = 'Libro aggiunto in libreria con successo'        
+        this.confermaModal = true;
+        this.libroSuccesso = true;
+        this.libroGiaPresente = false;
+        this.libroPresente = 'Libro aggiunto in libreria con successo'        
       }
     },
     async getBooks() {
@@ -119,7 +115,7 @@ export default {
         const result = await fetch('https://www.googleapis.com/books/v1/volumes?q='+this.query);
         const data = await result.json();
         this.books = data.items;
-      } catch(error) {
+      }catch(error) {
         console.log('errore: ', error);
       }
     }
