@@ -75,10 +75,11 @@ export default {
           },
       });
       const bookresult = await bookresponse.json();
-      console.log(bookresult.message);
+      //console.log(bookresult.message);
       if(bookresult.message !== 'Non Autorizzato!!!'){
         for(let i=0; i<bookresult.book.length; i++ ){
-          if (bookresult.book[i].titolo === newBook.titolo) {
+          if (bookresult.book[i].titolo === newBook.titolo && bookresult.book[i].autore === newBook.autore 
+                &&  bookresult.book[i].tipologia === newBook.tipologia) {
             this.confermaModal = true;
             this.libroGiaPresente = true;
             this.libroSuccesso = false;

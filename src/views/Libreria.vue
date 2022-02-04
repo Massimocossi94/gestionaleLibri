@@ -62,11 +62,14 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
+                    <div class="field">
                         <label class="checkbox">
                             <input id='letto2' type="checkbox"> Libro letto
                         </label>
                     </div>
-                    <button class="button is-info" @click="createBook" :disabled="tipologia===''">Salva</button>
+                    <button class="button is-info" @click="createBook" :disabled="tipologia==='Seleziona tipologia'">
+                        Salva</button>
                 </section>
             </div>
         </div>
@@ -206,7 +209,6 @@ export default {
             if (this.optionSelectedread !== null && this.optionSelectedread !== 'All') {
                 filtrati = filtrati.filter(book => {
                     return book.letto.includes(this.optionSelectedread)
-
                 });
             }
             // Filtro per autore
@@ -341,7 +343,8 @@ export default {
             });
             const bookresult = await bookresponse.json();
             for(let i=0; i<bookresult.book.length; i++ ){
-                if (bookresult.book[i].titolo === newBook.titolo) {
+                if (bookresult.book[i].titolo === newBook.titolo && bookresult.book[i].autore === newBook.autore 
+                        &&  bookresult.book[i].tipologia === newBook.tipologia) {
                     this.confermaModal = true;
                     this.libroGiaPresente = true;
                     this.libroSuccesso = false;

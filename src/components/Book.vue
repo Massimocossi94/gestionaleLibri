@@ -80,7 +80,8 @@
         </section>
         <footer class="modal-card-foot formatButtons">
           <button @click="aggiungiModal = false" class="button">Chiudi</button>
-          <button class="button is-primary" @click="addBook" :disabled="tipologiaLibro === '' || libroLetto===''">Aggiungi Libro</button>
+          <button class="button is-primary" @click="addBook" :disabled="tipologiaLibro === '' || libroLetto==='' 
+            || libroLetto==='Seleziona' || tipologiaLibro === 'Seleziona tipologia'">Aggiungi Libro</button>
         </footer>
       </div>
     </div>
