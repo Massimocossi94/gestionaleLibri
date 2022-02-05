@@ -1,12 +1,5 @@
 <template>
   <div class="card" v-if="book">
-   <!-- 
-    <div class="card-image">
-      <figure class="image is-50x60" v-if="book.volumeInfo.imageLinks">
-        <img :src="book.volumeInfo.imageLinks.thumbnail" :alt="book.volumeInfo.title">
-      </figure>
-    </div>
-    -->
     <div class="card-content">
       <div class="media">
         <div class="media-left" v-if="book.volumeInfo.imageLinks">

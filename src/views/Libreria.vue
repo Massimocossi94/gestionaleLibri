@@ -151,9 +151,6 @@ export default {
         MyBook
     },
     name: "Libreria",
-    mounted() {
-        
-    },
     data() {
         return {
             books: [],
