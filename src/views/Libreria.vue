@@ -152,9 +152,7 @@ export default {
     },
     name: "Libreria",
     mounted() {
-        if (!localStorage.getItem('token')) {
-            this.$router.push("/login");
-        }
+        
     },
     data() {
         return {
@@ -190,6 +188,9 @@ export default {
         }
     },
     created(){
+        if (!localStorage.getItem('token')) {
+            this.$router.push("/login");
+        }
         this.getbooks();
     },
     computed: {

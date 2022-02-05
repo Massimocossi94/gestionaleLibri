@@ -32,11 +32,11 @@ import { BOOKS } from "../api/books";
 export default {
   components: { Book },
   name: 'App',
-   mounted() {
-        if (!localStorage.getItem('token')) {
-            this.$router.replace("/login");
-        }
-    },
+   created() {
+    if (!localStorage.getItem('token')) {
+      this.$router.replace("/login");
+    }
+  },
   data() {
     return {
       books: [],
