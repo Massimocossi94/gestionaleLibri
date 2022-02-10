@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
-import Homepage from './views/Homepage'
+import Search from './views/Search'
 import Libreria from './views/Libreria'
 import Registrazione from './views/Registrazione'
 import Login from './views/Login'
@@ -9,7 +9,7 @@ import Login from './views/Login'
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', component: Homepage },
+  { path: '/search', component: Search },
   { path: '/books', component: Libreria },
   { path: '/registrazione', component: Registrazione },
   { path: '/login', component: Login }

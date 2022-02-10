@@ -4,7 +4,6 @@
         <div class="navbar-brand">
             <a class="navbar-item">
              <img src="../assets/HOME'S BOOKS2.png" width="170" height="38">
-                <!--<span class="title is-4"> Home's Books </span>-->
             </a>
 
             <a role="button" class="navbar-burger" @click="showNav = !showNav" :class="{ 'is-active': showNav }" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -17,7 +16,7 @@
         <div id="navbarBasicExample" class="navbar-menu" :class="{ 'is-active': showNav }">
             <div class="navbar-start">
                 
-                <router-link v-if="token" to="/" class="navbar-item">
+                <router-link v-if="token" to="/search" class="navbar-item">
                     RICERCA LIBRO 
                 </router-link>
 
@@ -73,13 +72,10 @@ export default {
             this.utente = result.user.toUpperCase()
         }else{
             localStorage.removeItem('token');
-            //this.$router.replace("/books");
-            //his.$router.back();
-
         }
     }
   },
-  mounted(){
+  created(){
         this.token = localStorage.getItem('token');
         this.getMe();
     },

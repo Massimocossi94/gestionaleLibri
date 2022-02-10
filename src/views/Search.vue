@@ -31,8 +31,8 @@ import { BOOKS } from "../api/books";
 
 export default {
   components: { Book },
-  name: 'App',
-   created() {
+  name: 'Search',
+  created() {
     if (!localStorage.getItem('token')) {
       this.$router.replace("/login");
     }
@@ -75,7 +75,6 @@ export default {
           },
       });
       const bookresult = await bookresponse.json();
-      //console.log(bookresult.message);
       if(bookresult.message !== 'Non Autorizzato!!!'){
         for(let i=0; i<bookresult.book.length; i++ ){
           if (bookresult.book[i].titolo === newBook.titolo && bookresult.book[i].autore === newBook.autore 
